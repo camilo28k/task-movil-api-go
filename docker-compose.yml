@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  # 🟢 Backend Go
+  task-movil-api:
+    build: .
+    container_name: task-movil-api-go
+    ports:
+      - "8090:8090"   # 👈 El backend corre en el puerto 8090
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: crud_db
+      DB_PORT: 5432
+      PORT: 8090
+    networks:
+      - crud_net
+
+  # 🟣 Base de datos PostgreSQL
+  postgres:
+    image: postgres:16
+    container_name: crud_postgres_go
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: crud_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - crud_net
+
+volumes:
+  postgres_data:
+
+networks:
+  crud_net:
+
