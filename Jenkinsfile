@@ -26,7 +26,7 @@ pipeline {
         stage('Subir imagen a Docker Hub') {
             steps {
                 echo "⬆️ Subiendo imagen a Docker Hub..."
-                withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'DOCKER_PASS')]) {
+                withCredentials([string(credentialsId: 'dockerhub-token', variable: 'DOCKER_PASS')]) {
                     sh '''
                         echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
                         docker push $IMAGE_NAME:latest
