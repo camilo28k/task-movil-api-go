@@ -38,14 +38,15 @@ pipeline {
         stage('Desplegar con Docker Compose') {
             steps {
                 echo "🚀 Desplegando contenedores (PostgreSQL + Backend Go)..."
-                sh '''
-                    docker compose down || true
-                    docker compose up -d --build
-                '''
-            }
-        }
-    }
+                  sh '''
+                     docker compose down || true
+                     docker compose up -d --build
+                     sleep 10  # 👈 Espera 10 segundos antes de finalizar
+                  '''
+               }
+           }
 
+        }
     post {
         success {
             echo "✅ Despliegue completado correctamente. El backend Go está en marcha."

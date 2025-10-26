@@ -1,25 +1,4 @@
-version: "3.9"
-
 services:
-  # 🟢 Backend Go
-  task-movil-api:
-    build: .
-    container_name: task-movil-api-go
-    ports:
-      - "8090:8090"   # 👈 El backend corre en el puerto 8090
-    depends_on:
-      - postgres
-    environment:
-      DB_HOST: postgres
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_NAME: crud_db
-      DB_PORT: 5432
-      PORT: 8090
-    networks:
-      - crud_net
-
-  # 🟣 Base de datos PostgreSQL
   postgres:
     image: postgres:16
     container_name: crud_postgres_go
@@ -29,14 +8,29 @@ services:
       POSTGRES_DB: crud_db
     ports:
       - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
       - crud_net
 
-volumes:
-  postgres_data:
+  task-movil-api-go:
+    build: .
+    container_name: task-movil-api-go
+    ports:
+      - "8090:8090"
+    depends_on:
+      postgres:
+        condition: service_healthy  # espera a que postgres esté listo
+    environment:
+      DB_HOST: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: crud_db
+      DB_PORT: 5432
+    networks:
+      - crud_net
 
-networks:
-  crud_net:
 
