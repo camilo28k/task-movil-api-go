@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USER = 'haroldbg' // 👈 Tu usuario de Docker Hub
-        DOCKER_PASS = credentials('dockerhub-pass') // 👈 ID de las credenciales guardadas en Jenkins
-        IMAGE_NAME = 'haroldbg/task-movil-api-go' // 👈 Nombre de la imagen que se subirá a Docker Hub
+        DOCKER_USER = 'haroldbg' //  Tu usuario de Docker Hub
+        DOCKER_PASS = credentials('dockerhub-token') //  ID de las credenciales guardadas en Jenkins
+        IMAGE_NAME = 'haroldbg/task-movil-api-go' //  Nombre de la imagen que se subirá a Docker Hub
     }
 
     stages {
